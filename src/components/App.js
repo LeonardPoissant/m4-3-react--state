@@ -4,13 +4,14 @@ import data from "../data";
 
 import Typehead from "./Typehead";
 
-function App() {
+function App(props) {
   return (
     <>
       <div />
       <Wrapper>
         <Typehead
           suggestions={data.books}
+          categories={data.categories}
           handleSelect={suggestion => {
             window.alert(suggestion);
           }}

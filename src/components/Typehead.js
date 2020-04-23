@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-const Typehead = ({ suggestions, handleSelect }) => {
+const Typehead = ({ suggestions, handleSelect, categories }) => {
   const [value, setValue] = React.useState("");
 
   let userSearch = suggestions.filter(suggestion => {
@@ -43,6 +43,7 @@ const Typehead = ({ suggestions, handleSelect }) => {
           {showSuggestion ? (
             <BookList>
               {userSearch.map(suggestion => {
+                const category = categories[suggestion.categoryId];
                 const startIndex = suggestion.title
                   .toLowerCase()
                   .indexOf(value.toLowerCase());
@@ -52,8 +53,12 @@ const Typehead = ({ suggestions, handleSelect }) => {
 
                 console.log("TTTTTTTTTTTTTTT", endIndex);
 
-                const firstHalf = suggestion.title.slice(startIndex);
-                const secondHalf = firstHalf.slice(endIndex);
+                const firstHalf = suggestion.title.slice(0, startIndex);
+                const secondHalf = suggestion.title.slice(startIndex, endIndex);
+                const thirdHalf = suggestion.title.slice(
+                  endIndex,
+                  suggestion.title.length
+                );
 
                 console.log("KkKKKKKKKKKKKKKKKK", firstHalf);
                 console.log("NNNNNNNNNNNNNNNN", secondHalf);
@@ -61,10 +66,12 @@ const Typehead = ({ suggestions, handleSelect }) => {
                   <Books
                     key={suggestion.id}
                     suggestion={suggestion}
+                    category={category}
                     onClick={() => handleSelect(suggestion.title)}
                   >
                     {firstHalf}
                     <StyledBook>{secondHalf}</StyledBook>
+                    {thirdHalf}
                   </Books>
                 );
 
@@ -100,7 +107,7 @@ const Input = styled.input`
 const BookList = styled.ul`
   list-style: none;
 `;
-const StyledBook = styled.div`
+const StyledBook = styled.span`
   font-weight: bold;
 `;
 const Books = styled.li`
