@@ -13,23 +13,20 @@ const Button = styled.button`
   border-radius: 4px;
   font-size: 18px;
   font-weight: bold;
-  background: #EEE;
+  background: #eee;
 `;
 
-const BlueButton = styled.button`
-  padding: 10px;
-  margin: 10px;
-  border-radius: 4px;
-  font-size: 18px;
-  font-weight: bold;
-  background: #2B00D7;
-  color: #FFF;
-`
+const BlueButton = styled(button)`
+  background: #2b00d7;
+  color: #fff;
+`;
 
-render(<>
-  <Button>Button 1</Button>
-  <BlueButton>Button 2</BlueButton>
-</>)
+render(
+  <>
+    <Button>Button 1</Button>
+    <BlueButton>Button 2</BlueButton>
+  </>
+);
 ```
 
 ---
@@ -45,7 +42,7 @@ const ListItem = styled.li`
   &:last-of-type {
     border-bottom: none;
   }
-`
+`;
 ```
 
 ---

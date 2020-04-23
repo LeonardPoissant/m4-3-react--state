@@ -17,14 +17,12 @@ const Counter = () => {
   return (
     <>
       <p>Count: {count}</p>
-      <button onClick={() => setCount(count + 1)}>
-        Increment
-      </button>
+      <button onClick={() => setCount(count + 1)}>Increment</button>
     </>
-  )
-}
+  );
+};
 
-render(<Counter />)
+render(<Counter />);
 ```
 
 ---
@@ -55,7 +53,6 @@ Hooks are way of "hooking into" React's abilities, like managing state.
 
 ---
 
-
 # 🙅‍♀️ Mutating state
 
 This snippet won't throw an error, but it also won't work:
@@ -84,7 +81,7 @@ This is why the values on the screen change.
 
 ```jsx live=true
 const Name = () => {
-  const [name, setName] = React.useState('');
+  const [name, setName] = React.useState("");
 
   return (
     <div style={{ fontSize: 32 }}>
@@ -98,10 +95,10 @@ const Name = () => {
       />
       <p>Your name is {name}</p>
     </div>
-  )
-}
+  );
+};
 
-render(<Name />)
+render(<Name />);
 ```
 
 <!--
@@ -130,11 +127,7 @@ function SomeComponent() {
 
   console.log(count);
 
-  return (
-    <button onClick={() => setCount(count + 1)}>
-      One, Two, Three!
-    </button>
-  )
+  return <button onClick={() => setCount(count + 1)}>One, Two, Three!</button>;
 }
 ```
 
@@ -148,14 +141,7 @@ function SomeComponent() {
 
   console.log(thing);
 
-  return (
-    <input
-      value={thing}
-      onChange={(ev) =>
-        setThing(ev.target.value)
-      }
-    />
-  )
+  return <input value={thing} onChange={ev => setThing(ev.target.value)} />;
 }
 ```
 
@@ -172,14 +158,9 @@ function SomeComponent() {
   return (
     <input
       value={thing}
-      onChange={(ev) =>
-        setThing(
-          thing +
-          Number(ev.target.value)
-        )
-      }
+      onChange={ev => setThing(thing + Number(ev.target.value))}
     />
-  )
+  );
 }
 ```
 
@@ -198,15 +179,14 @@ function SomeComponent() {
       <input
         type="checkbox"
         checked={agreed}
-        onChange={(ev) =>
-          setAgreed(!agreed)
-        }
+        onChange={ev => setAgreed(!agreed)}
       />
       Yes I want to receive spam
     </label>
-  )
+  );
 }
 ```
+
 ---
 
 # State and Props
@@ -219,31 +199,33 @@ What happens when you want to share state between components?
 
 ```jsx
 const App = () => {
+  const [searchTerm, setSearchTerm] = React.useState("");
   return (
     <>
-      <SearchInput />
+      <SearchInput searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       <SearchResults />
     </>
-  )
-}
+  );
+};
 
-const SearchInput = () => {
-  const [searchTerm, setSearchTerm] = React.useState('');
+const SearchInput = ({ searchTerm, setSearchTerm }) => {
+  ///const [searchTerm, setSearchTerm] = React.useState('');
+  // put the useState in the app so it can be used in both functions
 
   return (
     <input
       type="text"
       value={searchTerm}
-      onChange={(ev) => {
+      onChange={ev => {
         setSearchTerm(ev.target.value);
       }}
     />
   );
-}
+};
 
-const SearchResults = () => {
+const SearchResults = ({ searchTerm }) => {
   // ??
-}
+};
 ```
 
 ---
@@ -259,37 +241,31 @@ Lift state up in the following examples
 ---
 
 ```jsx live=true
-const Counter = () => {
-  const [count, setCount] = React.useState(0);
-
+const Counter = ({ count, setCount }) => {
   return (
     <>
-      <button onClick={() => setCount(count + 1)}>
-        Increment
-      </button>
+      <button onClick={() => setCount(count + 1)}>Increment</button>
     </>
-  )
+  );
 };
 
 const App = () => {
+  const [count, setCount] = React.useState(0);
   return (
     <>
-      The current count is: ???
-
-      <Counter />
+      The current count is: {count}
+      <Counter count={count} setCount={setCount} />
     </>
-  )
-}
+  );
+};
 
-render(<App />)
+render(<App />);
 ```
 
 ---
 
 ```jsx live=true
-const FavouriteFood = () => {
-  const [food, setFood] = React.useState('');
-
+const FavouriteFood = ({ food, setFood }) => {
   return (
     <>
       <label>
@@ -297,8 +273,8 @@ const FavouriteFood = () => {
           type="radio"
           name="food"
           value="pizza"
-          checked={food === 'pizza'}
-          onChange={() => setFood('pizza')}
+          checked={food === "pizza"}
+          onChange={() => setFood("pizza")}
         />
         Pizza
       </label>
@@ -307,26 +283,27 @@ const FavouriteFood = () => {
           type="radio"
           name="food"
           value="broccoli"
-          checked={food === 'broccoli'}
-          onChange={() => setFood('broccoli')}
+          checked={food === "broccoli"}
+          onChange={() => setFood("broccoli")}
         />
         Broccoli
       </label>
     </>
-  )
+  );
 };
 
 const App = () => {
+  const [food, setFood] = React.useState("");
   return (
     <>
-      My favourite food is: ???
-      <br /><br />
-      <FavouriteFood />
-    </>
-  )
-}
+      <p>My favourite food is: {food} </p>
 
-render(<App />)
+      <FavouriteFood food={food} setFood={setFood} />
+    </>
+  );
+};
+
+render(<App />);
 ```
 
 ---
@@ -342,18 +319,12 @@ render(<App />)
   return (
     <>
       <h3>What do you call someone with no body and no nose?</h3>
-
-      {showAnswer && (
-        <p>Nobody knows!</p>
-      )} 
-      
-      <button onClick={() => setShowAnswer(true)}>
-        Show punchline
-      </button>
+      {showAnswer && <p>Nobody knows!</p>}
+      //if showAnswer is true show the <p></p>
+      <button onClick={() => setShowAnswer(!showAnswer)}>Show punchline</button>
     </>
-  )
-}
-
+  );
+};
 ```
 
 ---
